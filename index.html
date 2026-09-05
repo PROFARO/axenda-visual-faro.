@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="gl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Axenda Visual FARO v1.4</title>
+<style>
+:root{--accent:#145da0;--accent-soft:#eaf3fb;--bg:#f5f7fa;--card:#fff;--text:#17202a;--muted:#667085;--border:#d9e1ea;--ok:#27864a;--warn:#d79500;--danger:#cf3b3b}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+header{height:64px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:20}
+.brand{font-size:22px;font-weight:800;margin-right:auto}.navbtn,.iconbtn,.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 12px}.navbtn.active,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.iconbtn{width:40px;height:40px;padding:0;font-size:18px}.wrap{max-width:1280px;margin:auto;padding:20px}.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}.toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field.grow{flex:1;min-width:220px}.field input,.field select{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}.duration{display:flex;flex-wrap:wrap;gap:6px}.duration button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px}.duration button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sequence{display:flex;flex-direction:column;gap:8px}.insert{border:1px dashed #afbdcc;background:transparent;color:var(--muted);border-radius:10px;height:36px;font-size:23px}.block{display:grid;grid-template-columns:32px 64px 1fr auto auto;align-items:center;gap:10px;border:1px solid var(--border);background:#fff;border-radius:14px;padding:10px}.drag{font-size:22px;color:#98a2b3;cursor:grab}.picto,.picto-fallback{width:58px;height:58px;object-fit:contain;border-radius:8px;background:#fff}.picto-fallback{display:grid;place-items:center;border:1px dashed var(--border);font-size:11px;color:var(--muted);text-align:center}.bname{font-size:18px;font-weight:750}.customfields{display:grid;grid-template-columns:1fr 1fr;gap:6px}.customfields input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px}.customfields small{grid-column:1/-1;color:var(--muted)}.timecontrols{display:flex;align-items:center;gap:4px}.timecontrols button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 9px}.timeval{min-width:54px;text-align:center;font-weight:800}.summary{font-weight:700;margin:12px 0 0}.summary.ok{color:var(--ok)}.summary.warn{color:#9b6500}.summary.bad{color:var(--danger)}
+.modalback{position:fixed;inset:0;background:rgba(15,23,42,.42);display:grid;place-items:center;z-index:50;padding:20px}.modal{background:#fff;border-radius:18px;max-width:900px;width:100%;max-height:84vh;overflow:auto;padding:18px}.modalhead{display:flex;align-items:center}.modalhead h2{margin:0 auto 0 0}.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:15px}.catitem{border:1px solid var(--border);background:#fff;border-radius:13px;padding:10px;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:700;text-align:center}.catitem small{color:var(--muted)}
+.weekhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.weekgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.day{background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px;min-height:310px}.day h3{margin:0 0 8px;font-size:16px}.sessioncard{border:1px solid var(--border);border-radius:10px;padding:9px;margin-bottom:8px;background:#fff}.sessioncard strong{display:block}.sessioncard small{color:var(--muted)}.sessionactions{display:flex;gap:4px;margin-top:7px}.sessionactions button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:5px 7px;font-size:12px}.dayadd{width:100%;border:1px dashed #afbdcc;background:transparent;border-radius:9px;padding:7px;color:var(--muted)}
+.librarygrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}.saved{border:1px solid var(--border);border-radius:13px;padding:12px;background:#fff}.saved h3{margin:0 0 4px}.saved p{margin:0;color:var(--muted)}.saved .actions{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}.saved .actions button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 8px}
+#aula{background:#f7f9fc;min-height:calc(100vh - 64px)}.aulaGrid{display:grid;grid-template-columns:.9fr 1.15fr;gap:18px;align-items:start}.current{position:sticky;top:84px;text-align:center}.currentPicto{width:155px;height:155px;object-fit:contain}.currentName{font-size:38px;font-weight:850;margin:8px 0 16px}.segments{display:grid;grid-template-columns:repeat(20,1fr);gap:5px}.seg{height:36px;border-radius:6px;background:#dce3eb}.seg.on{background:var(--ok)}.segments.warning .seg.on{background:var(--warn)}.segments.danger .seg.on{background:var(--danger)}.clock{font-size:24px;font-weight:800;margin:10px}.live{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}.live button{border:1px solid var(--border);background:#fff;border-radius:9px;padding:8px 10px}.timeline{display:flex;flex-direction:column;gap:9px}.task{display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;border:2px solid var(--border);border-radius:14px;padding:10px;background:#fff}.task img,.task .picto-fallback{width:54px;height:54px}.task .name{font-size:21px;font-weight:800}.task .mins{font-weight:800;color:var(--muted)}.task.done{opacity:.72;background:#eef8f1;border-color:#a7d2b3}.task.done .name{text-decoration:line-through}.task.active{background:var(--accent-soft);border-color:var(--accent);box-shadow:0 0 0 4px rgba(20,93,160,.11)}.task.pending{opacity:.55}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17202a;color:#fff;padding:10px 14px;border-radius:10px;z-index:80}
+footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center}
+@media(max-width:900px){.weekgrid{grid-template-columns:1fr 1fr}.aulaGrid{grid-template-columns:1fr}.current{position:static}.block{grid-template-columns:28px 52px 1fr}.block>.timecontrols,.block>.iconbtn{grid-column:3}.currentName{font-size:30px}}
+@media(max-width:560px){header{height:auto;padding:10px;flex-wrap:wrap}.brand{width:100%}.weekgrid{grid-template-columns:1fr}.wrap{padding:10px}.block{grid-template-columns:28px 48px 1fr}.timecontrols{flex-wrap:wrap}.currentPicto{width:115px;height:115px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">Axenda Visual FARO</div>
+ <button class="navbtn active" data-view="editor">Editor</button>
+ <button class="navbtn" data-view="week">Semana</button>
+ <button class="navbtn" data-view="library">Sesións</button>
+ <button class="navbtn" id="exportAll">Exportar</button>
+ <label class="navbtn" style="cursor:pointer">Importar<input id="importFile" type="file" accept=".faro,.json" hidden></label>
+</header>
+<main>
+<section id="editor" class="wrap view">
+ <div class="panel toolbar">
+  <label class="field grow">Nome da sesión<input id="sessionName" value="Matemáticas"></label>
+  <label class="field">Materia<input id="subject" value="Matemáticas"></label>
+  <label class="field">Data<input id="date" type="date"></label>
+  <div class="field"><span>Duración</span><div id="durations" class="duration"></div></div>
+ </div>
+ <div class="panel">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><strong style="margin-right:auto">Estrutura da sesión</strong><button class="btn" id="newSession">Nova</button><button class="btn" id="saveSession">Gardar</button><button class="btn primary" id="startSession">Comezar</button></div>
+  <div id="sequence" class="sequence"></div>
+  <p id="summary" class="summary"></p>
+ </div>
+</section>
+<section id="week" class="wrap view hidden">
+ <div class="panel">
+  <div class="weekhead"><button class="iconbtn" id="prevWeek">‹</button><h2 id="weekTitle" style="margin:0"></h2><button class="iconbtn" id="nextWeek">›</button></div>
+  <div id="weekGrid" class="weekgrid" style="margin-top:14px"></div>
+ </div>
+</section>
+<section id="library" class="wrap view hidden">
+ <div class="panel"><h2 style="margin-top:0">Sesións gardadas</h2><div id="libraryGrid" class="librarygrid"></div></div>
+</section>
+<section id="aula" class="wrap view hidden">
+ <div class="aulaGrid">
+  <div class="panel current">
+   <img id="currentPicto" class="currentPicto" alt="">
+   <div id="currentName" class="currentName"></div>
+   <div id="segments" class="segments"></div>
+   <div id="clock" class="clock"></div>
+   <div class="live"><button data-live="-5">−5</button><button data-live="-1">−1</button><button id="pause">Pausa</button><button data-live="1">+1</button><button data-live="5">+5</button></div>
+   <div class="live" style="margin-top:8px"><button id="prevBlock">◀</button><button id="nextBlock">▶</button><button id="miniMode">Modo mini</button><button id="exitAula">Editar</button></div>
+  </div>
+  <div class="panel"><div id="timeline" class="timeline"></div></div>
+ </div>
+</section>
+</main>
+<div id="modalBack" class="modalback hidden"><div class="modal"><div class="modalhead"><h2>Engadir bloque</h2><button class="iconbtn" id="closeModal">×</button></div><div id="catalog" class="catalog"></div></div></div>
+<div id="toast" class="toast hidden"></div>
+<footer>Pictogramas: Sergio Palao · ARASAAC, Goberno de Aragón · CC BY-NC-SA</footer>
+<script>
+const CATALOG=[
+ ['Benvida','benvida',5],['Corrección','corrixir',10],['Explicación','explicar',10],['Dúbidas','preguntar',5],['Traballo individual','traballar',15],['Traballo cooperativo','traballo en grupo',15],['Lectura','ler',10],['Escritura','escribir',10],['Vídeo','vídeo',10],['Experimento','experimento',15],['Investigación','investigar',15],['Debate','debate',10],['TIC','ordenador',10],['Descanso activo','descansar',5],['Avaliación','avaliación',10],['Autoavaliación','autoavaliación',5],['Recollida','recoller',5],['Peche','rematar',5],['Saída','saír',5]
+];
+const DURATIONS=[20,30,45,50,55,60,90];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
+const today=()=>new Date().toISOString().slice(0,10);
+let insertAt=0, dragged=null, weekOffset=0;
+const S={current:{id:null,name:'Matemáticas',subject:'Matemáticas',date:today(),duration:50,blocks:[]},sessions:[],pictos:{},aula:{idx:0,remain:0,total:0,timer:null,paused:false,mini:null}};
+function defaults(){return [{id:uid(),name:'Corrección',term:'corrixir',min:10},{id:uid(),name:'Explicación',term:'explicar',min:10},{id:uid(),name:'Dúbidas',term:'preguntar',min:5},{id:uid(),name:'Traballo individual',term:'traballar',min:20},{id:uid(),name:'Peche',term:'rematar',min:5}]}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),1800)}
+function loadStore(){try{S.sessions=JSON.parse(localStorage.getItem('faro_sessions')||'[]')}catch{S.sessions=[]}try{const c=JSON.parse(localStorage.getItem('faro_draft')||'null');if(c)S.current=c}catch{}if(!S.current.blocks.length)S.current.blocks=defaults()}
+function saveStore(){localStorage.setItem('faro_sessions',JSON.stringify(S.sessions));localStorage.setItem('faro_draft',JSON.stringify(S.current))}
+async function getPicto(term){if(term in S.pictos)return S.pictos[term];try{const r=await fetch('https://api.arasaac.org/v1/pictograms/gl/search/'+encodeURIComponent(term));if(!r.ok)throw 0;const d=await r.json(),id=d?.[0]?._id;if(!id)throw 0;return S.pictos[term]=`https://static.arasaac.org/pictograms/${id}/${id}_500.png`}catch{return S.pictos[term]=null}}
+async function pictoHTML(term,cls='picto'){if(!term)return `<div class="picto-fallback">Sen pictograma</div>`;const u=await getPicto(term);return u?`<img class="${cls}" src="${u}" alt="${term}">`:`<div class="picto-fallback">${term}</div>`}
+function syncForm(){S.current.name=$('#sessionName').value.trim()||'Sesión';S.current.subject=$('#subject').value.trim()||'Materia';S.current.date=$('#date').value||today();saveStore()}
+function bindForm(){['sessionName','subject','date'].forEach(id=>$('#'+id).addEventListener('input',syncForm))}
+function renderDurations(){const e=$('#durations');e.innerHTML='';DURATIONS.forEach(n=>{const b=document.createElement('button');b.textContent=n;b.className=n===S.current.duration?'active':'';b.onclick=()=>{S.current.duration=n;renderDurations();renderSummary();saveStore()};e.appendChild(b)})}
+async function renderSequence(){const e=$('#sequence');e.innerHTML='';for(let i=0;i<=S.current.blocks.length;i++){const ins=document.createElement('button');ins.className='insert';ins.textContent='＋';ins.title='Engadir bloque aquí';ins.onclick=()=>openCatalog(i);e.appendChild(ins);if(i===S.current.blocks.length)continue;const b=S.current.blocks[i],row=document.createElement('div');row.className='block';row.draggable=true;row.dataset.index=i;const content=b.custom?`<div class="customfields"><input data-name value="${(b.name||'').replace(/"/g,'&quot;')}" placeholder="Nome da actividade"><input data-term value="${(b.term||'').replace(/"/g,'&quot;')}" placeholder="Pictograma ARASAAC (opcional)"><small>Escribe un termo no segundo campo para buscar automaticamente o pictograma.</small></div>`:`<div class="bname">${b.name}</div>`;row.innerHTML=`<div class="drag">⋮⋮</div>${await pictoHTML(b.term)}${content}<div class="timecontrols"><button data-d="-5">−5</button><button data-d="-1">−1</button><span class="timeval">${b.min}</span><button data-d="1">+1</button><button data-d="5">+5</button></div><button class="iconbtn" data-del title="Eliminar">×</button>`;if(b.custom){row.querySelector('[data-name]').oninput=x=>{b.name=x.target.value;saveStore()};row.querySelector('[data-term]').onchange=x=>{b.term=x.target.value.trim();renderSequence();saveStore()}}row.querySelectorAll('[data-d]').forEach(x=>x.onclick=()=>{b.min=Math.max(1,b.min+(+x.dataset.d));renderSequence();saveStore()});row.querySelector('[data-del]').onclick=()=>{S.current.blocks.splice(i,1);renderSequence();saveStore()};row.addEventListener('dragstart',()=>dragged=i);row.addEventListener('dragover',ev=>ev.preventDefault());row.addEventListener('drop',ev=>{ev.preventDefault();if(dragged===null||dragged===i)return;const [m]=S.current.blocks.splice(dragged,1);S.current.blocks.splice(i,0,m);dragged=null;renderSequence();saveStore()});e.appendChild(row)}renderSummary()}
+function renderSummary(){const t=S.current.blocks.reduce((a,b)=>a+b.min,0),d=S.current.duration-t,e=$('#summary');e.className='summary '+(d===0?'ok':d>0?'warn':'bad');e.textContent=d===0?`Axenda completa · ${t} min`:d>0?`Quedan ${d} min por distribuír`:`Supera a sesión en ${-d} min`}
+async function renderCatalog(){const e=$('#catalog');e.innerHTML='';const custom=document.createElement('button');custom.className='catitem';custom.innerHTML=`<div class="picto-fallback" style="font-size:30px">＋</div><span>Bloque personalizado</span><small>Editable</small>`;custom.onclick=()=>{S.current.blocks.splice(insertAt,0,{id:uid(),name:'',term:'',min:10,custom:true});closeCatalog();renderSequence();saveStore()};e.appendChild(custom);for(const [name,term,min] of CATALOG){const b=document.createElement('button');b.className='catitem';b.innerHTML=`${await pictoHTML(term)}<span>${name}</span><small>${min} min</small>`;b.onclick=()=>{S.current.blocks.splice(insertAt,0,{id:uid(),name,term,min});closeCatalog();renderSequence();saveStore()};e.appendChild(b)}}
+function openCatalog(i){insertAt=i;$('#modalBack').classList.remove('hidden')}function closeCatalog(){$('#modalBack').classList.add('hidden')}
+function newSession(date=today()){S.current={id:null,name:'Nova sesión',subject:'Materia',date,duration:50,blocks:defaults()};fillForm();renderDurations();renderSequence();saveStore();showView('editor')}
+function fillForm(){$('#sessionName').value=S.current.name;$('#subject').value=S.current.subject;$('#date').value=S.current.date}
+function saveSession(){syncForm();const copy=JSON.parse(JSON.stringify(S.current));if(!copy.id)copy.id=uid();const i=S.sessions.findIndex(x=>x.id===copy.id);if(i>=0)S.sessions[i]=copy;else S.sessions.push(copy);S.current=JSON.parse(JSON.stringify(copy));saveStore();renderLibrary();renderWeek();toast('Sesión gardada')}
+function openSession(id){const x=S.sessions.find(s=>s.id===id);if(!x)return;S.current=JSON.parse(JSON.stringify(x));fillForm();renderDurations();renderSequence();saveStore();showView('editor')}
+function duplicateSession(id){const x=S.sessions.find(s=>s.id===id);if(!x)return;const c=JSON.parse(JSON.stringify(x));c.id=uid();c.name+=' · copia';S.sessions.push(c);saveStore();renderLibrary();renderWeek()}
+function deleteSession(id){S.sessions=S.sessions.filter(x=>x.id!==id);saveStore();renderLibrary();renderWeek()}
+function showView(id){$$('.view').forEach(v=>v.classList.toggle('hidden',v.id!==id));$$('.navbtn[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id==='week')renderWeek();if(id==='library')renderLibrary()}
+function startOfWeek(offset=0){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day+offset*7);d.setHours(0,0,0,0);return d}function iso(d){return d.toISOString().slice(0,10)}function fmt(d){return d.toLocaleDateString('gl-ES',{day:'numeric',month:'short'})}
+function renderWeek(){const start=startOfWeek(weekOffset),end=new Date(start);end.setDate(end.getDate()+4);$('#weekTitle').textContent=`${fmt(start)} – ${fmt(end)}`;const grid=$('#weekGrid');grid.innerHTML='';['Luns','Martes','Mércores','Xoves','Venres'].forEach((name,i)=>{const d=new Date(start);d.setDate(d.getDate()+i);const date=iso(d),col=document.createElement('div');col.className='day';col.innerHTML=`<h3>${name} · ${fmt(d)}</h3>`;S.sessions.filter(s=>s.date===date).forEach(s=>{const c=document.createElement('div');c.className='sessioncard';c.innerHTML=`<strong>${s.name}</strong><small>${s.subject} · ${s.duration} min</small><div class="sessionactions"><button data-open>Abrir</button><button data-dup>Duplicar</button><button data-del>×</button></div>`;c.querySelector('[data-open]').onclick=()=>openSession(s.id);c.querySelector('[data-dup]').onclick=()=>duplicateSession(s.id);c.querySelector('[data-del]').onclick=()=>deleteSession(s.id);col.appendChild(c)});const add=document.createElement('button');add.className='dayadd';add.textContent='＋';add.onclick=()=>newSession(date);col.appendChild(add);grid.appendChild(col)})}
+function renderLibrary(){const e=$('#libraryGrid');e.innerHTML='';if(!S.sessions.length){e.innerHTML='<p style="color:var(--muted)">Aínda non hai sesións gardadas.</p>';return}S.sessions.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(s=>{const c=document.createElement('div');c.className='saved';c.innerHTML=`<h3>${s.name}</h3><p>${s.subject} · ${s.date} · ${s.duration} min</p><div class="actions"><button data-open>Abrir</button><button data-dup>Duplicar</button><button data-del>Eliminar</button></div>`;c.querySelector('[data-open]').onclick=()=>openSession(s.id);c.querySelector('[data-dup]').onclick=()=>duplicateSession(s.id);c.querySelector('[data-del]').onclick=()=>deleteSession(s.id);e.appendChild(c)})}
+function exportAll(){syncForm();const payload={format:'axenda-visual-faro',version:1,exportedAt:new Date().toISOString(),sessions:S.sessions,draft:S.current};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Axenda_FARO_${today()}.faro`;a.click();URL.revokeObjectURL(a.href)}
+async function importFile(file){try{const p=JSON.parse(await file.text());const incoming=Array.isArray(p)?p:(p.sessions||[]);if(!Array.isArray(incoming))throw 0;incoming.forEach(s=>{if(!s.id)s.id=uid();const i=S.sessions.findIndex(x=>x.id===s.id);if(i>=0)S.sessions[i]=s;else S.sessions.push(s)});if(p.draft)S.current=p.draft;saveStore();fillForm();renderDurations();renderSequence();renderLibrary();renderWeek();toast('Ficheiro importado')}catch{alert('O ficheiro non é válido.')}}
+async function renderTimeline(){const e=$('#timeline');e.innerHTML='';for(let i=0;i<S.current.blocks.length;i++){const b=S.current.blocks[i],r=document.createElement('div');r.className='task '+(i<S.aula.idx?'done':i===S.aula.idx?'active':'pending');r.innerHTML=`${await pictoHTML(b.term)}<div class="name">${b.name}</div><div class="mins">${b.min} min</div>`;e.appendChild(r)}updateMini()}
+function renderSegments(){const p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*20),e=$('#segments');e.className='segments '+(p<=.15?'danger':p<=.4?'warning':'');e.innerHTML='';for(let i=0;i<20;i++){const s=document.createElement('div');s.className='seg '+(i<on?'on':'');e.appendChild(s)}updateMini()}
+async function loadBlock(){clearInterval(S.aula.timer);if(S.aula.idx>=S.current.blocks.length){$('#currentName').textContent='Sesión rematada';$('#currentPicto').style.display='none';$('#clock').textContent='';S.aula.total=S.aula.remain=0;renderSegments();renderTimeline();return}const b=S.current.blocks[S.aula.idx],u=await getPicto(b.term);$('#currentPicto').style.display=u?'inline-block':'none';if(u)$('#currentPicto').src=u;$('#currentName').textContent=b.name;S.aula.total=b.min*60;S.aula.remain=S.aula.total;S.aula.paused=false;$('#pause').textContent='Pausa';renderTimeline();tick();S.aula.timer=setInterval(tick,1000)}
+function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){S.aula.idx++;loadBlock()}}
+function startAula(){syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');showView('aula');S.aula.idx=0;loadBlock()}
+function adjustLive(m){if(S.aula.idx>=S.current.blocks.length)return;S.aula.total=Math.max(60,S.aula.total+m*60);S.aula.remain=Math.max(0,S.aula.remain+m*60);S.current.blocks[S.aula.idx].min=Math.max(1,Math.round(S.aula.total/60));saveStore();renderTimeline();renderSegments()}
+function miniHTML(){return `<!doctype html><html><head><meta charset="utf-8"><title>FARO mini</title><style>body{font-family:Arial;margin:0;background:#fff;color:#17202a}main{padding:14px;text-align:center}.name{font-size:24px;font-weight:800;margin:8px}.bars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}.bar{height:28px;background:#dce3eb;border-radius:5px}.bar.on{background:#27864a}.next{margin-top:12px;color:#667085}.hint{font-size:11px;color:#667085;margin-top:10px}</style></head><body><main><div id="name" class="name">Axenda FARO</div><div id="bars" class="bars"></div><div id="next" class="next"></div><div class="hint">En KDE: clic dereito na barra da ventá → Máis accións → Manter por enriba</div></main></body></html>`}
+function openMini(){let w=S.aula.mini;if(w&&!w.closed){w.focus();return}w=window.open('','faroMini','width=300,height=330,resizable=yes');if(!w){alert('O navegador bloqueou a ventá mini. Permite as ventás emerxentes para esta páxina.');return}w.document.write(miniHTML());w.document.close();S.aula.mini=w;updateMini()}
+function updateMini(){const w=S.aula.mini;if(!w||w.closed)return;const b=S.current.blocks[S.aula.idx],next=S.current.blocks[S.aula.idx+1],p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*10);w.document.getElementById('name').textContent=b?b.name:'Sesión rematada';const bars=w.document.getElementById('bars');bars.innerHTML='';for(let i=0;i<10;i++){const x=w.document.createElement('div');x.className='bar '+(i<on?'on':'');bars.appendChild(x)}w.document.getElementById('next').textContent=next?'Despois: '+next.name:''}
+$$('.navbtn[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+$('#closeModal').onclick=closeCatalog;$('#modalBack').onclick=e=>{if(e.target===$('#modalBack'))closeCatalog()};
+$('#newSession').onclick=()=>newSession();$('#saveSession').onclick=saveSession;$('#startSession').onclick=startAula;
+$('#prevWeek').onclick=()=>{weekOffset--;renderWeek()};$('#nextWeek').onclick=()=>{weekOffset++;renderWeek()};
+$('#exportAll').onclick=exportAll;$('#importFile').onchange=e=>{if(e.target.files[0])importFile(e.target.files[0]);e.target.value=''};
+$$('[data-live]').forEach(b=>b.onclick=()=>adjustLive(+b.dataset.live));$('#pause').onclick=()=>{S.aula.paused=!S.aula.paused;$('#pause').textContent=S.aula.paused?'Continuar':'Pausa'};$('#prevBlock').onclick=()=>{if(S.aula.idx>0){S.aula.idx--;loadBlock()}};$('#nextBlock').onclick=()=>{if(S.aula.idx<S.current.blocks.length){S.aula.idx++;loadBlock()}};$('#exitAula').onclick=()=>{clearInterval(S.aula.timer);showView('editor');renderSequence()};$('#miniMode').onclick=openMini;
+loadStore();fillForm();bindForm();renderDurations();renderCatalog();renderSequence();renderLibrary();renderWeek();
+</script>
+</body>
+</html>
