@@ -1,3 +1,31 @@
-Este ficheiro queda reservado para indicar a licenza definitiva do recurso.
+LICENZA DE USO — PROXECTO FARO
 
-Antes da publicación pública, recoméndase acordar a licenza de uso da aplicación FARO e, se procede, as condicións específicas para os materiais e pictogramas de terceiros.
+Os materiais educativos do Proxecto FARO compártense baixo unha licenza
+Creative Commons Recoñecemento-NonComercial-CompartirIgual 4.0 Internacional
+(CC BY-NC-SA 4.0).
+
+Isto significa que:
+
+• Podes copiar, descargar e utilizar os materiais.
+• Podes adaptalos e modificalos para fins educativos.
+• Debes recoñecer a autoría do Proxecto FARO e do CEIPP Vista Alegre.
+• Non podes utilizar os materiais con fins comerciais.
+• Se creas materiais derivados ou adaptados, debes compartilos baixo a mesma
+  licenza CC BY-NC-SA 4.0.
+
+Referencia de autoría:
+
+Proxecto FARO
+CEIPP Vista Alegre — Burela
+Curso 2026/2027
+
+Esta licenza aplícase aos materiais educativos do Proxecto FARO,
+incluíndo o Modelo de Centro, a Guía Operativa, a Caixa de Ferramentas
+e os recursos e guías asociados.
+
+A aplicación web poderá conter elementos de software ou recursos de terceiros
+que estean sometidos ás súas propias condicións de uso e licenzas.
+
+Licenza:
+Creative Commons BY-NC-SA 4.0 Internacional
+https://creativecommons.org/licenses/by-nc-sa/4.0/
