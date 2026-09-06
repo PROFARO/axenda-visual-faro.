@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="./manifest.json">
 <title>Axenda Visual FARO v1.4</title>
 <style>
 :root{--accent:#145da0;--accent-soft:#eaf3fb;--bg:#f5f7fa;--card:#fff;--text:#17202a;--muted:#667085;--border:#d9e1ea;--ok:#27864a;--warn:#d79500;--danger:#cf3b3b}
@@ -112,7 +113,17 @@ async function loadBlock(){clearInterval(S.aula.timer);if(S.aula.idx>=S.current.
 function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){S.aula.idx++;loadBlock()}}
 function startAula(){syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');showView('aula');S.aula.idx=0;loadBlock()}
 function adjustLive(m){if(S.aula.idx>=S.current.blocks.length)return;S.aula.total=Math.max(60,S.aula.total+m*60);S.aula.remain=Math.max(0,S.aula.remain+m*60);S.current.blocks[S.aula.idx].min=Math.max(1,Math.round(S.aula.total/60));saveStore();renderTimeline();renderSegments()}
-function miniHTML(){return `<!doctype html><html><head><meta charset="utf-8"><title>FARO mini</title><style>body{font-family:Arial;margin:0;background:#fff;color:#17202a}main{padding:14px;text-align:center}.name{font-size:24px;font-weight:800;margin:8px}.bars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}.bar{height:28px;background:#dce3eb;border-radius:5px}.bar.on{background:#27864a}.next{margin-top:12px;color:#667085}.hint{font-size:11px;color:#667085;margin-top:10px}</style></head><body><main><div id="name" class="name">Axenda FARO</div><div id="bars" class="bars"></div><div id="next" class="next"></div><div class="hint">En KDE: clic dereito na barra da ventá → Máis accións → Manter por enriba</div></main></body></html>`}
+function miniHTML(){return `<!doctype html><html><head><meta charset="utf-8"><title>FARO mini</title><style>body{font-family:Arial;margin:0;background:#fff;color:#17202a}main{padding:14px;text-align:center}.name{font-size:24px;font-weight:800;margin:8px}.bars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}.bar{height:28px;background:#dce3eb;border-radius:5px}.bar.on{background:#27864a}.next{margin-top:12px;color:#667085}.hint{font-size:11px;color:#667085;margin-top:10px}</style></head><body><main><div id="name" class="name">Axenda FARO</div><div id="bars" class="bars"></div><div id="next" class="next"></div><div class="hint">En KDE: clic dereito na barra da ventá → Máis accións → Manter por enriba</div></main>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(() => {});
+  });
+}
+</script>
+
+</body></html>`}
 function openMini(){let w=S.aula.mini;if(w&&!w.closed){w.focus();return}w=window.open('','faroMini','width=300,height=330,resizable=yes');if(!w){alert('O navegador bloqueou a ventá mini. Permite as ventás emerxentes para esta páxina.');return}w.document.write(miniHTML());w.document.close();S.aula.mini=w;updateMini()}
 function updateMini(){const w=S.aula.mini;if(!w||w.closed)return;const b=S.current.blocks[S.aula.idx],next=S.current.blocks[S.aula.idx+1],p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*10);w.document.getElementById('name').textContent=b?b.name:'Sesión rematada';const bars=w.document.getElementById('bars');bars.innerHTML='';for(let i=0;i<10;i++){const x=w.document.createElement('div');x.className='bar '+(i<on?'on':'');bars.appendChild(x)}w.document.getElementById('next').textContent=next?'Despois: '+next.name:''}
 $$('.navbtn[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
@@ -123,5 +134,15 @@ $('#exportAll').onclick=exportAll;$('#importFile').onchange=e=>{if(e.target.file
 $$('[data-live]').forEach(b=>b.onclick=()=>adjustLive(+b.dataset.live));$('#pause').onclick=()=>{S.aula.paused=!S.aula.paused;$('#pause').textContent=S.aula.paused?'Continuar':'Pausa'};$('#prevBlock').onclick=()=>{if(S.aula.idx>0){S.aula.idx--;loadBlock()}};$('#nextBlock').onclick=()=>{if(S.aula.idx<S.current.blocks.length){S.aula.idx++;loadBlock()}};$('#exitAula').onclick=()=>{clearInterval(S.aula.timer);showView('editor');renderSequence()};$('#miniMode').onclick=openMini;
 loadStore();fillForm();bindForm();renderDurations();renderCatalog();renderSequence();renderLibrary();renderWeek();
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(() => {});
+  });
+}
+</script>
+
 </body>
 </html>

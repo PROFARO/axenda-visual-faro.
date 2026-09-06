@@ -1,0 +1,9 @@
+{
+  "name": "Axenda Visual FARO",
+  "short_name": "Axenda FARO",
+  "description": "Axenda visual dixital do Proxecto FARO.",
+  "lang": "gl",
+  "start_url": "./axenda.html",
+  "scope": "./",
+  "display": "standalone"
+}
