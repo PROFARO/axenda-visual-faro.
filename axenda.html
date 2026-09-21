@@ -80,7 +80,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const today=()=>new Date().toISOString().slice(0,10);
 let insertAt=0, dragged=null, weekOffset=0;
-const S={current:{id:null,name:'Matemáticas',subject:'Matemáticas',date:today(),duration:50,blocks:[]},sessions:[],pictos:{},aula:{idx:0,remain:0,total:0,timer:null,paused:false,mini:null}};
+const S={current:{id:null,name:'Matemáticas',subject:'Matemáticas',date:today(),duration:50,blocks:[]},sessions:[],pictos:{},aula:{idx:0,remain:0,total:0,timer:null,paused:false,mini:null,audio:null}};
 function defaults(){return [{id:uid(),name:'Corrección',term:'corrixir',min:10},{id:uid(),name:'Explicación',term:'explicar',min:10},{id:uid(),name:'Dúbidas',term:'preguntar',min:5},{id:uid(),name:'Traballo individual',term:'traballar',min:20},{id:uid(),name:'Peche',term:'rematar',min:5}]}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),1800)}
 function loadStore(){try{S.sessions=JSON.parse(localStorage.getItem('faro_sessions')||'[]')}catch{S.sessions=[]}try{const c=JSON.parse(localStorage.getItem('faro_draft')||'null');if(c)S.current=c}catch{}if(!S.current.blocks.length)S.current.blocks=defaults()}
@@ -106,11 +106,33 @@ function renderWeek(){const start=startOfWeek(weekOffset),end=new Date(start);en
 function renderLibrary(){const e=$('#libraryGrid');e.innerHTML='';if(!S.sessions.length){e.innerHTML='<p style="color:var(--muted)">Aínda non hai sesións gardadas.</p>';return}S.sessions.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(s=>{const c=document.createElement('div');c.className='saved';c.innerHTML=`<h3>${s.name}</h3><p>${s.subject} · ${s.date} · ${s.duration} min</p><div class="actions"><button data-open>Abrir</button><button data-dup>Duplicar</button><button data-del>Eliminar</button></div>`;c.querySelector('[data-open]').onclick=()=>openSession(s.id);c.querySelector('[data-dup]').onclick=()=>duplicateSession(s.id);c.querySelector('[data-del]').onclick=()=>deleteSession(s.id);e.appendChild(c)})}
 function exportAll(){syncForm();const payload={format:'axenda-visual-faro',version:1,exportedAt:new Date().toISOString(),sessions:S.sessions,draft:S.current};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Axenda_FARO_${today()}.faro`;a.click();URL.revokeObjectURL(a.href)}
 async function importFile(file){try{const p=JSON.parse(await file.text());const incoming=Array.isArray(p)?p:(p.sessions||[]);if(!Array.isArray(incoming))throw 0;incoming.forEach(s=>{if(!s.id)s.id=uid();const i=S.sessions.findIndex(x=>x.id===s.id);if(i>=0)S.sessions[i]=s;else S.sessions.push(s)});if(p.draft)S.current=p.draft;saveStore();fillForm();renderDurations();renderSequence();renderLibrary();renderWeek();toast('Ficheiro importado')}catch{alert('O ficheiro non é válido.')}}
-async function renderTimeline(){const e=$('#timeline');e.innerHTML='';for(let i=0;i<S.current.blocks.length;i++){const b=S.current.blocks[i],r=document.createElement('div');r.className='task '+(i<S.aula.idx?'done':i===S.aula.idx?'active':'pending');r.innerHTML=`${await pictoHTML(b.term)}<div class="name">${b.name}</div><div class="mins">${b.min} min</div>`;e.appendChild(r)}updateMini()}
+async function initAudio(){
+  try{
+    if(!S.aula.audio)S.aula.audio=new(window.AudioContext||window.webkitAudioContext)();
+    if(S.aula.audio.state==='suspended')S.aula.audio.resume();
+  }catch{}
+}
+function playFinishSound(){
+  try{
+    const ctx=S.aula.audio||new(window.AudioContext||window.webkitAudioContext)();
+    S.aula.audio=ctx;
+    if(ctx.state==='suspended')ctx.resume();
+    const now=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(900,now);
+    g.gain.setValueAtTime(0.0001,now);
+    g.gain.exponentialRampToValueAtTime(0.32,now+0.025);
+    g.gain.setValueAtTime(0.32,now+0.68);
+    g.gain.exponentialRampToValueAtTime(0.0001,now+0.8);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(now);o.stop(now+0.81);
+  }catch{}
+}
+function renderTimeline(){const e=$('#timeline');e.innerHTML='';for(let i=0;i<S.current.blocks.length;i++){const b=S.current.blocks[i],r=document.createElement('div');r.className='task '+(i<S.aula.idx?'done':i===S.aula.idx?'active':'pending');r.innerHTML=`${await pictoHTML(b.term)}<div class="name">${b.name}</div><div class="mins">${b.min} min</div>`;e.appendChild(r)}updateMini()}
 function renderSegments(){const p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*20),e=$('#segments');e.className='segments '+(p<=.15?'danger':p<=.4?'warning':'');e.innerHTML='';for(let i=0;i<20;i++){const s=document.createElement('div');s.className='seg '+(i<on?'on':'');e.appendChild(s)}updateMini()}
 async function loadBlock(){clearInterval(S.aula.timer);if(S.aula.idx>=S.current.blocks.length){$('#currentName').textContent='Sesión rematada';$('#currentPicto').style.display='none';$('#clock').textContent='';S.aula.total=S.aula.remain=0;renderSegments();renderTimeline();return}const b=S.current.blocks[S.aula.idx],u=await getPicto(b.term);$('#currentPicto').style.display=u?'inline-block':'none';if(u)$('#currentPicto').src=u;$('#currentName').textContent=b.name;S.aula.total=b.min*60;S.aula.remain=S.aula.total;S.aula.paused=false;$('#pause').textContent='Pausa';renderTimeline();tick();S.aula.timer=setInterval(tick,1000)}
-function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){S.aula.idx++;loadBlock()}}
-function startAula(){syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');showView('aula');S.aula.idx=0;loadBlock()}
+function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){playFinishSound();S.aula.idx++;loadBlock()}}
+function startAula(){syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');initAudio();showView('aula');S.aula.idx=0;loadBlock()}
 function adjustLive(m){if(S.aula.idx>=S.current.blocks.length)return;S.aula.total=Math.max(60,S.aula.total+m*60);S.aula.remain=Math.max(0,S.aula.remain+m*60);S.current.blocks[S.aula.idx].min=Math.max(1,Math.round(S.aula.total/60));saveStore();renderTimeline();renderSegments()}
 function miniHTML(){return `<!doctype html><html><head><meta charset="utf-8"><title>FARO mini</title><style>body{font-family:Arial;margin:0;background:#fff;color:#17202a}main{padding:14px;text-align:center}.name{font-size:24px;font-weight:800;margin:8px}.bars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}.bar{height:28px;background:#dce3eb;border-radius:5px}.bar.on{background:#27864a}.next{margin-top:12px;color:#667085}.hint{font-size:11px;color:#667085;margin-top:10px}</style></head><body><main><div id="name" class="name">Axenda FARO</div><div id="bars" class="bars"></div><div id="next" class="next"></div><div class="hint">En KDE: clic dereito na barra da ventá → Máis accións → Manter por enriba</div></main></body></html>`}
 function openMini(){let w=S.aula.mini;if(w&&!w.closed){w.focus();return}w=window.open('','faroMini','width=300,height=330,resizable=yes');if(!w){alert('O navegador bloqueou a ventá mini. Permite as ventás emerxentes para esta páxina.');return}w.document.write(miniHTML());w.document.close();S.aula.mini=w;updateMini()}
