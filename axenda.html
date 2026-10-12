@@ -8,12 +8,12 @@
 :root{--accent:#145da0;--accent-soft:#eaf3fb;--bg:#f5f7fa;--card:#fff;--text:#17202a;--muted:#667085;--border:#d9e1ea;--ok:#27864a;--warn:#d79500;--danger:#cf3b3b}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
 button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
-header{height:64px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:20}
-.brand{font-size:22px;font-weight:800;margin-right:auto}.navbtn,.iconbtn,.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 12px}.navbtn.active,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
- .sound-toggle{font-weight:800;white-space:nowrap;border:2px solid var(--accent)!important;min-height:40px}.sound-toggle[aria-pressed="true"]{background:var(--accent);color:#fff}.sound-toggle[aria-pressed="false"]{background:#fff;color:var(--text)}
-.bell-fab{position:fixed;right:18px;bottom:18px;z-index:40;padding:14px 18px;border-radius:16px;box-shadow:0 5px 22px rgba(0,0,0,.25);font-size:17px;font-weight:900;min-height:54px}
-.bell-fab:focus-visible{outline:4px solid #f3b61f;outline-offset:3px}
-@media(max-width:560px){.bell-fab{right:10px;bottom:10px;padding:12px 14px;font-size:15px}}
+header{min-height:64px;height:auto;background:#fff;border-bottom:1px solid var(--border);display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,max-content);align-items:center;gap:12px;padding:10px 16px;position:sticky;top:0;z-index:20}
+.brand{font-size:22px;font-weight:800;line-height:1.25;white-space:nowrap;flex:1 1 220px;min-width:0;margin:0}
+.header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;min-width:0;max-width:100%}
+.navbtn,.iconbtn,.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 12px}.navbtn.active,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sound-toggle{font-weight:800;white-space:nowrap;border:2px solid var(--accent)!important;min-height:40px;flex:0 0 auto}.sound-toggle[aria-pressed="true"]{background:var(--accent);color:#fff}.sound-toggle[aria-pressed="false"]{background:#fff;color:var(--text)}
+.sound-toggle:focus-visible{outline:3px solid #f3b61f;outline-offset:2px}
 .iconbtn{width:40px;height:40px;padding:0;font-size:18px}.wrap{max-width:1280px;margin:auto;padding:20px}.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}.toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field.grow{flex:1;min-width:220px}.field input,.field select{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}.duration{display:flex;flex-wrap:wrap;gap:6px}.duration button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px}.duration button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .sequence{display:flex;flex-direction:column;gap:8px}.insert{border:1px dashed #afbdcc;background:transparent;color:var(--muted);border-radius:10px;height:36px;font-size:23px}.block{display:grid;grid-template-columns:32px 64px 1fr auto auto;align-items:center;gap:10px;border:1px solid var(--border);background:#fff;border-radius:14px;padding:10px}.drag{font-size:22px;color:#98a2b3;cursor:grab}.picto,.picto-fallback{width:58px;height:58px;object-fit:contain;border-radius:8px;background:#fff}.picto-fallback{display:grid;place-items:center;border:1px dashed var(--border);font-size:11px;color:var(--muted);text-align:center}.bname{font-size:18px;font-weight:750}.customfields{display:grid;grid-template-columns:1fr 1fr;gap:6px}.customfields input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px}.customfields small{grid-column:1/-1;color:var(--muted)}.timecontrols{display:flex;align-items:center;gap:4px}.timecontrols button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 9px}.timeval{min-width:54px;text-align:center;font-weight:800}.summary{font-weight:700;margin:12px 0 0}.summary.ok{color:var(--ok)}.summary.warn{color:#9b6500}.summary.bad{color:var(--danger)}
 .modalback{position:fixed;inset:0;background:rgba(15,23,42,.42);display:grid;place-items:center;z-index:50;padding:20px}.modal{background:#fff;border-radius:18px;max-width:900px;width:100%;max-height:84vh;overflow:auto;padding:18px}.modalhead{display:flex;align-items:center}.modalhead h2{margin:0 auto 0 0}.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:15px}.catitem{border:1px solid var(--border);background:#fff;border-radius:13px;padding:10px;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:700;text-align:center}.catitem small{color:var(--muted)}
@@ -22,19 +22,22 @@ header{height:64px;background:#fff;border-bottom:1px solid var(--border);display
 #aula{background:#f7f9fc;min-height:calc(100vh - 64px)}.aulaGrid{display:grid;grid-template-columns:.9fr 1.15fr;gap:18px;align-items:start}.current{position:sticky;top:84px;text-align:center}.currentPicto{width:155px;height:155px;object-fit:contain}.currentName{font-size:38px;font-weight:850;margin:8px 0 16px}.segments{display:grid;grid-template-columns:repeat(20,1fr);gap:5px}.seg{height:36px;border-radius:6px;background:#dce3eb}.seg.on{background:var(--ok)}.segments.warning .seg.on{background:var(--warn)}.segments.danger .seg.on{background:var(--danger)}.clock{font-size:24px;font-weight:800;margin:10px}.live{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}.live button{border:1px solid var(--border);background:#fff;border-radius:9px;padding:8px 10px}.timeline{display:flex;flex-direction:column;gap:9px}.task{display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;border:2px solid var(--border);border-radius:14px;padding:10px;background:#fff}.task img,.task .picto-fallback{width:54px;height:54px}.task .name{font-size:21px;font-weight:800}.task .mins{font-weight:800;color:var(--muted)}.task.done{opacity:.72;background:#eef8f1;border-color:#a7d2b3}.task.done .name{text-decoration:line-through}.task.active{background:var(--accent-soft);border-color:var(--accent);box-shadow:0 0 0 4px rgba(20,93,160,.11)}.task.pending{opacity:.55}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17202a;color:#fff;padding:10px 14px;border-radius:10px;z-index:80}
 footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center}
-@media(max-width:900px){header{height:auto;flex-wrap:wrap;padding:10px 14px}.weekgrid{grid-template-columns:1fr 1fr}.aulaGrid{grid-template-columns:1fr}.current{position:static}.block{grid-template-columns:28px 52px 1fr}.block>.timecontrols,.block>.iconbtn{grid-column:3}.currentName{font-size:30px}}
-@media(max-width:560px){header{height:auto;padding:10px;flex-wrap:wrap}.brand{width:100%}.weekgrid{grid-template-columns:1fr}.wrap{padding:10px}.block{grid-template-columns:28px 48px 1fr}.timecontrols{flex-wrap:wrap}.currentPicto{width:115px;height:115px}}
+@media(max-width:900px){.weekgrid{grid-template-columns:1fr 1fr}.aulaGrid{grid-template-columns:1fr}.current{position:static}.block{grid-template-columns:28px 52px 1fr}.block>.timecontrols,.block>.iconbtn{grid-column:3}.currentName{font-size:30px}}
+@media(max-width:1000px){header{grid-template-columns:minmax(0,1fr);align-items:start;gap:10px}.brand{white-space:normal}.header-actions{width:100%;justify-content:flex-start}.navbtn{min-height:40px}}
+@media(max-width:560px){header{padding:10px}.header-actions{gap:6px}.navbtn{padding:8px 10px;font-size:14px}.weekgrid{grid-template-columns:1fr}.wrap{padding:10px}.block{grid-template-columns:28px 48px 1fr}.timecontrols{flex-wrap:wrap}.currentPicto{width:115px;height:115px}}
 </style>
 </head>
 <body>
 <header>
  <div class="brand">Axenda Visual FARO</div>
- <button class="navbtn sound-toggle" data-bell-toggle type="button" aria-pressed="true" title="Activar ou desactivar o son ao rematar cada actividade">🔔 Campá: activada</button>
- <button class="navbtn active" data-view="editor">Editor</button>
- <button class="navbtn" data-view="week">Semana</button>
- <button class="navbtn" data-view="library">Sesións</button>
- <button class="navbtn" id="exportAll">Exportar</button>
- <label class="navbtn" style="cursor:pointer">Importar<input id="importFile" type="file" accept=".faro,.json" hidden></label>
+ <nav class="header-actions" aria-label="Navegación principal">
+  <button class="navbtn sound-toggle" id="bellToggle" data-bell-toggle type="button" aria-pressed="true" title="Activar ou desactivar o son ao rematar cada actividade">🔔 Campá: activada</button>
+  <button class="navbtn active" data-view="editor">Editor</button>
+  <button class="navbtn" data-view="week">Semana</button>
+  <button class="navbtn" data-view="library">Sesións</button>
+  <button class="navbtn" id="exportAll">Exportar</button>
+  <label class="navbtn" style="cursor:pointer">Importar<input id="importFile" type="file" accept=".faro,.json" hidden></label>
+ </nav>
 </header>
 <main>
 <section id="editor" class="wrap view">
@@ -45,7 +48,7 @@ footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center
   <div class="field"><span>Duración</span><div id="durations" class="duration"></div></div>
  </div>
  <div class="panel">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap"><strong style="margin-right:auto">Estrutura da sesión</strong><button class="btn" id="newSession">Nova</button><button class="btn" id="saveSession">Gardar</button><button class="btn sound-toggle" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button><button class="btn primary" id="startSession">Comezar</button></div>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap"><strong style="margin-right:auto">Estrutura da sesión</strong><button class="btn" id="newSession">Nova</button><button class="btn" id="saveSession">Gardar</button><button class="btn primary" id="startSession">Comezar</button></div>
   <div id="sequence" class="sequence"></div>
   <p id="summary" class="summary"></p>
  </div>
@@ -68,14 +71,14 @@ footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center
    <div id="clock" class="clock"></div>
    <div class="live"><button data-live="-5">−5</button><button data-live="-1">−1</button><button id="pause">Pausa</button><button data-live="1">+1</button><button data-live="5">+5</button></div>
    <div class="live" style="margin-top:8px"><button id="prevBlock">◀</button><button id="nextBlock">▶</button><button id="miniMode">Modo mini</button><button id="exitAula">Editar</button></div>
-   <div class="live" style="margin-top:8px"><button class="btn sound-toggle" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button></div>
+   <div class="live" style="margin-top:8px"></div>
   </div>
   <div class="panel"><div id="timeline" class="timeline"></div></div>
  </div>
 </section>
 </main>
 <div id="modalBack" class="modalback hidden"><div class="modal"><div class="modalhead"><h2>Engadir bloque</h2><button class="iconbtn" id="closeModal">×</button></div><div id="catalog" class="catalog"></div></div></div>
-<button class="btn sound-toggle bell-fab" data-bell-toggle type="button" aria-pressed="true" aria-label="Activar ou desactivar o son de campá">🔔 Campá: activada</button>
+
 <div id="toast" class="toast hidden"></div>
 <footer>Pictogramas: Sergio Palao · ARASAAC, Goberno de Aragón · CC BY-NC-SA</footer>
 <script>
@@ -86,10 +89,12 @@ const DURATIONS=[20,30,45,50,55,60,90];
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const today=()=>new Date().toISOString().slice(0,10);
+function readStorage(key){try{return window.localStorage.getItem(key)}catch(e){return null}}
+function writeStorage(key,value){try{window.localStorage.setItem(key,value)}catch(e){/* O navegador pode bloquear o almacenamento local. */}}
 let insertAt=0, dragged=null, weekOffset=0;
 let bellContext = null;
 // A campá está activada por defecto para conservar o comportamento previo.
-let bellEnabled = localStorage.getItem('faro_bell_enabled') !== 'false';
+let bellEnabled = readStorage('faro_bell_enabled') !== 'false';
 const S={current:{id:null,name:'Matemáticas',subject:'Matemáticas',date:today(),duration:50,blocks:[]},sessions:[],pictos:{},aula:{idx:0,remain:0,total:0,timer:null,paused:false,mini:null}};
 function defaults(){return [{id:uid(),name:'Corrección',term:'corrixir',min:10},{id:uid(),name:'Explicación',term:'explicar',min:10},{id:uid(),name:'Dúbidas',term:'preguntar',min:5},{id:uid(),name:'Traballo individual',term:'traballar',min:20},{id:uid(),name:'Peche',term:'rematar',min:5}]}
 function prepareBellAudio(){
@@ -101,17 +106,17 @@ function prepareBellAudio(){
  }catch(e){/* O navegador pode non permitir audio. */}
 }
 function renderBellToggle(){
- $$('[data-bell-toggle]').forEach(b=>{
+ const b=$('#bellToggle');
+ if(!b)return;
   b.textContent=bellEnabled?'🔔 Campá: activada':'🔕 Campá: desactivada';
   b.classList.toggle('primary',bellEnabled);
   b.classList.toggle('active',bellEnabled);
   b.setAttribute('aria-pressed',String(bellEnabled));
   b.title=bellEnabled?'Preme para desactivar o son ao rematar cada actividade':'Preme para activar o son ao rematar cada actividade';
- });
 }
 function toggleBell(){
  bellEnabled=!bellEnabled;
- try{localStorage.setItem('faro_bell_enabled',String(bellEnabled))}catch(e){}
+ writeStorage('faro_bell_enabled',String(bellEnabled));
  renderBellToggle();
  toast(bellEnabled?'Son de campá activado':'Son de campá desactivado');
 }
@@ -137,8 +142,8 @@ function playBell(){
  }catch(e){/* A axenda segue funcionando aínda que o audio non estea dispoñible. */}
 }
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),1800)}
-function loadStore(){try{S.sessions=JSON.parse(localStorage.getItem('faro_sessions')||'[]')}catch{S.sessions=[]}try{const c=JSON.parse(localStorage.getItem('faro_draft')||'null');if(c)S.current=c}catch{}if(!S.current.blocks.length)S.current.blocks=defaults()}
-function saveStore(){localStorage.setItem('faro_sessions',JSON.stringify(S.sessions));localStorage.setItem('faro_draft',JSON.stringify(S.current))}
+function loadStore(){try{S.sessions=JSON.parse(readStorage('faro_sessions')||'[]')}catch{S.sessions=[]}try{const c=JSON.parse(readStorage('faro_draft')||'null');if(c)S.current=c}catch{}if(!S.current.blocks.length)S.current.blocks=defaults()}
+function saveStore(){writeStorage('faro_sessions',JSON.stringify(S.sessions));writeStorage('faro_draft',JSON.stringify(S.current))}
 async function getPicto(term){if(term in S.pictos)return S.pictos[term];try{const r=await fetch('https://api.arasaac.org/v1/pictograms/gl/search/'+encodeURIComponent(term));if(!r.ok)throw 0;const d=await r.json(),id=d?.[0]?._id;if(!id)throw 0;return S.pictos[term]=`https://static.arasaac.org/pictograms/${id}/${id}_500.png`}catch{return S.pictos[term]=null}}
 async function pictoHTML(term,cls='picto'){if(!term)return `<div class="picto-fallback">Sen pictograma</div>`;const u=await getPicto(term);return u?`<img class="${cls}" src="${u}" alt="${term}">`:`<div class="picto-fallback">${term}</div>`}
 function syncForm(){S.current.name=$('#sessionName').value.trim()||'Sesión';S.current.subject=$('#subject').value.trim()||'Materia';S.current.date=$('#date').value||today();saveStore()}
@@ -171,7 +176,7 @@ function openMini(){let w=S.aula.mini;if(w&&!w.closed){w.focus();return}w=window
 function updateMini(){const w=S.aula.mini;if(!w||w.closed)return;const b=S.current.blocks[S.aula.idx],next=S.current.blocks[S.aula.idx+1],p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*10);w.document.getElementById('name').textContent=b?b.name:'Sesión rematada';const bars=w.document.getElementById('bars');bars.innerHTML='';for(let i=0;i<10;i++){const x=w.document.createElement('div');x.className='bar '+(i<on?'on':'');bars.appendChild(x)}w.document.getElementById('next').textContent=next?'Despois: '+next.name:''}
 $$('.navbtn[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 $('#closeModal').onclick=closeCatalog;$('#modalBack').onclick=e=>{if(e.target===$('#modalBack'))closeCatalog()};
-$('#newSession').onclick=()=>newSession();$('#saveSession').onclick=saveSession;$('#startSession').onclick=startAula;$$('[data-bell-toggle]').forEach(b=>b.onclick=toggleBell);
+$('#newSession').onclick=()=>newSession();$('#saveSession').onclick=saveSession;$('#startSession').onclick=startAula;const bellToggle=$('#bellToggle');if(bellToggle)bellToggle.onclick=toggleBell;
 $('#prevWeek').onclick=()=>{weekOffset--;renderWeek()};$('#nextWeek').onclick=()=>{weekOffset++;renderWeek()};
 $('#exportAll').onclick=exportAll;$('#importFile').onchange=e=>{if(e.target.files[0])importFile(e.target.files[0]);e.target.value=''};
 $$('[data-live]').forEach(b=>b.onclick=()=>adjustLive(+b.dataset.live));$('#pause').onclick=()=>{S.aula.paused=!S.aula.paused;$('#pause').textContent=S.aula.paused?'Continuar':'Pausa'};$('#prevBlock').onclick=()=>{if(S.aula.idx>0){S.aula.idx--;loadBlock()}};$('#nextBlock').onclick=()=>{if(S.aula.idx<S.current.blocks.length){S.aula.idx++;loadBlock()}};$('#exitAula').onclick=()=>{clearInterval(S.aula.timer);showView('editor');renderSequence()};$('#miniMode').onclick=openMini;
