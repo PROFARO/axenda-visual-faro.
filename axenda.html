@@ -80,8 +80,37 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const today=()=>new Date().toISOString().slice(0,10);
 let insertAt=0, dragged=null, weekOffset=0;
+let bellContext = null;
 const S={current:{id:null,name:'Matemáticas',subject:'Matemáticas',date:today(),duration:50,blocks:[]},sessions:[],pictos:{},aula:{idx:0,remain:0,total:0,timer:null,paused:false,mini:null}};
 function defaults(){return [{id:uid(),name:'Corrección',term:'corrixir',min:10},{id:uid(),name:'Explicación',term:'explicar',min:10},{id:uid(),name:'Dúbidas',term:'preguntar',min:5},{id:uid(),name:'Traballo individual',term:'traballar',min:20},{id:uid(),name:'Peche',term:'rematar',min:5}]}
+function prepareBellAudio(){
+ try{
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return;
+  if(!bellContext)bellContext=new AudioContextClass();
+  if(bellContext.state==='suspended')bellContext.resume().catch(()=>{});
+ }catch(e){/* O navegador pode non permitir audio. */}
+}
+function playBell(){
+ try{
+  prepareBellAudio();
+  if(!bellContext||bellContext.state!=='running')return;
+  const ctx=bellContext,now=ctx.currentTime;
+  const master=ctx.createGain();
+  master.gain.setValueAtTime(0.7,now);
+  master.connect(ctx.destination);
+  // Varios harmónicos crean un son de campá suave cunha duración de 2 segundos.
+  [[880,0.16,'sine'],[1320,0.09,'sine'],[1760,0.055,'triangle'],[2200,0.03,'sine']].forEach(([frequency,volume,wave])=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();
+   osc.type=wave;
+   osc.frequency.setValueAtTime(frequency,now);
+   gain.gain.setValueAtTime(volume,now);
+   gain.gain.exponentialRampToValueAtTime(0.0001,now+2);
+   osc.connect(gain);gain.connect(master);
+   osc.start(now);osc.stop(now+2.02);
+  });
+ }catch(e){/* A axenda segue funcionando aínda que o audio non estea dispoñible. */}
+}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.remove('hidden');setTimeout(()=>e.classList.add('hidden'),1800)}
 function loadStore(){try{S.sessions=JSON.parse(localStorage.getItem('faro_sessions')||'[]')}catch{S.sessions=[]}try{const c=JSON.parse(localStorage.getItem('faro_draft')||'null');if(c)S.current=c}catch{}if(!S.current.blocks.length)S.current.blocks=defaults()}
 function saveStore(){localStorage.setItem('faro_sessions',JSON.stringify(S.sessions));localStorage.setItem('faro_draft',JSON.stringify(S.current))}
@@ -109,8 +138,8 @@ async function importFile(file){try{const p=JSON.parse(await file.text());const 
 async function renderTimeline(){const e=$('#timeline');e.innerHTML='';for(let i=0;i<S.current.blocks.length;i++){const b=S.current.blocks[i],r=document.createElement('div');r.className='task '+(i<S.aula.idx?'done':i===S.aula.idx?'active':'pending');r.innerHTML=`${await pictoHTML(b.term)}<div class="name">${b.name}</div><div class="mins">${b.min} min</div>`;e.appendChild(r)}updateMini()}
 function renderSegments(){const p=S.aula.total?Math.max(0,S.aula.remain/S.aula.total):0,on=Math.ceil(p*20),e=$('#segments');e.className='segments '+(p<=.15?'danger':p<=.4?'warning':'');e.innerHTML='';for(let i=0;i<20;i++){const s=document.createElement('div');s.className='seg '+(i<on?'on':'');e.appendChild(s)}updateMini()}
 async function loadBlock(){clearInterval(S.aula.timer);if(S.aula.idx>=S.current.blocks.length){$('#currentName').textContent='Sesión rematada';$('#currentPicto').style.display='none';$('#clock').textContent='';S.aula.total=S.aula.remain=0;renderSegments();renderTimeline();return}const b=S.current.blocks[S.aula.idx],u=await getPicto(b.term);$('#currentPicto').style.display=u?'inline-block':'none';if(u)$('#currentPicto').src=u;$('#currentName').textContent=b.name;S.aula.total=b.min*60;S.aula.remain=S.aula.total;S.aula.paused=false;$('#pause').textContent='Pausa';renderTimeline();tick();S.aula.timer=setInterval(tick,1000)}
-function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){S.aula.idx++;loadBlock()}}
-function startAula(){syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');showView('aula');S.aula.idx=0;loadBlock()}
+function tick(){if(S.aula.paused)return;renderSegments();$('#clock').textContent=Math.floor(S.aula.remain/60)+':'+String(S.aula.remain%60).padStart(2,'0');S.aula.remain--;if(S.aula.remain<0){playBell();S.aula.idx++;loadBlock()}}
+function startAula(){prepareBellAudio();syncForm();if(!S.current.blocks.length)return alert('Engade polo menos un bloque.');showView('aula');S.aula.idx=0;loadBlock()}
 function adjustLive(m){if(S.aula.idx>=S.current.blocks.length)return;S.aula.total=Math.max(60,S.aula.total+m*60);S.aula.remain=Math.max(0,S.aula.remain+m*60);S.current.blocks[S.aula.idx].min=Math.max(1,Math.round(S.aula.total/60));saveStore();renderTimeline();renderSegments()}
 function miniHTML(){return `<!doctype html><html><head><meta charset="utf-8"><title>FARO mini</title><style>body{font-family:Arial;margin:0;background:#fff;color:#17202a}main{padding:14px;text-align:center}.name{font-size:24px;font-weight:800;margin:8px}.bars{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}.bar{height:28px;background:#dce3eb;border-radius:5px}.bar.on{background:#27864a}.next{margin-top:12px;color:#667085}.hint{font-size:11px;color:#667085;margin-top:10px}</style></head><body><main><div id="name" class="name">Axenda FARO</div><div id="bars" class="bars"></div><div id="next" class="next"></div><div class="hint">En KDE: clic dereito na barra da ventá → Máis accións → Manter por enriba</div></main></body></html>`}
 function openMini(){let w=S.aula.mini;if(w&&!w.closed){w.focus();return}w=window.open('','faroMini','width=300,height=330,resizable=yes');if(!w){alert('O navegador bloqueou a ventá mini. Permite as ventás emerxentes para esta páxina.');return}w.document.write(miniHTML());w.document.close();S.aula.mini=w;updateMini()}
