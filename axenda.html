@@ -10,6 +10,7 @@
 button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
 header{height:64px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px;position:sticky;top:0;z-index:20}
 .brand{font-size:22px;font-weight:800;margin-right:auto}.navbtn,.iconbtn,.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 12px}.navbtn.active,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sound-toggle{font-weight:800;white-space:nowrap;border:2px solid var(--accent)!important;min-height:40px}.sound-toggle[aria-pressed="true"]{background:var(--accent);color:#fff}.sound-toggle[aria-pressed="false"]{background:#fff;color:var(--text)}
 .iconbtn{width:40px;height:40px;padding:0;font-size:18px}.wrap{max-width:1280px;margin:auto;padding:20px}.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px}.toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.field{display:flex;flex-direction:column;gap:5px}.field.grow{flex:1;min-width:220px}.field input,.field select{border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff}.duration{display:flex;flex-wrap:wrap;gap:6px}.duration button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px}.duration button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .sequence{display:flex;flex-direction:column;gap:8px}.insert{border:1px dashed #afbdcc;background:transparent;color:var(--muted);border-radius:10px;height:36px;font-size:23px}.block{display:grid;grid-template-columns:32px 64px 1fr auto auto;align-items:center;gap:10px;border:1px solid var(--border);background:#fff;border-radius:14px;padding:10px}.drag{font-size:22px;color:#98a2b3;cursor:grab}.picto,.picto-fallback{width:58px;height:58px;object-fit:contain;border-radius:8px;background:#fff}.picto-fallback{display:grid;place-items:center;border:1px dashed var(--border);font-size:11px;color:var(--muted);text-align:center}.bname{font-size:18px;font-weight:750}.customfields{display:grid;grid-template-columns:1fr 1fr;gap:6px}.customfields input{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px}.customfields small{grid-column:1/-1;color:var(--muted)}.timecontrols{display:flex;align-items:center;gap:4px}.timecontrols button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 9px}.timeval{min-width:54px;text-align:center;font-weight:800}.summary{font-weight:700;margin:12px 0 0}.summary.ok{color:var(--ok)}.summary.warn{color:#9b6500}.summary.bad{color:var(--danger)}
 .modalback{position:fixed;inset:0;background:rgba(15,23,42,.42);display:grid;place-items:center;z-index:50;padding:20px}.modal{background:#fff;border-radius:18px;max-width:900px;width:100%;max-height:84vh;overflow:auto;padding:18px}.modalhead{display:flex;align-items:center}.modalhead h2{margin:0 auto 0 0}.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:15px}.catitem{border:1px solid var(--border);background:#fff;border-radius:13px;padding:10px;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:700;text-align:center}.catitem small{color:var(--muted)}
@@ -18,13 +19,14 @@ header{height:64px;background:#fff;border-bottom:1px solid var(--border);display
 #aula{background:#f7f9fc;min-height:calc(100vh - 64px)}.aulaGrid{display:grid;grid-template-columns:.9fr 1.15fr;gap:18px;align-items:start}.current{position:sticky;top:84px;text-align:center}.currentPicto{width:155px;height:155px;object-fit:contain}.currentName{font-size:38px;font-weight:850;margin:8px 0 16px}.segments{display:grid;grid-template-columns:repeat(20,1fr);gap:5px}.seg{height:36px;border-radius:6px;background:#dce3eb}.seg.on{background:var(--ok)}.segments.warning .seg.on{background:var(--warn)}.segments.danger .seg.on{background:var(--danger)}.clock{font-size:24px;font-weight:800;margin:10px}.live{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}.live button{border:1px solid var(--border);background:#fff;border-radius:9px;padding:8px 10px}.timeline{display:flex;flex-direction:column;gap:9px}.task{display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;border:2px solid var(--border);border-radius:14px;padding:10px;background:#fff}.task img,.task .picto-fallback{width:54px;height:54px}.task .name{font-size:21px;font-weight:800}.task .mins{font-weight:800;color:var(--muted)}.task.done{opacity:.72;background:#eef8f1;border-color:#a7d2b3}.task.done .name{text-decoration:line-through}.task.active{background:var(--accent-soft);border-color:var(--accent);box-shadow:0 0 0 4px rgba(20,93,160,.11)}.task.pending{opacity:.55}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17202a;color:#fff;padding:10px 14px;border-radius:10px;z-index:80}
 footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center}
-@media(max-width:900px){.weekgrid{grid-template-columns:1fr 1fr}.aulaGrid{grid-template-columns:1fr}.current{position:static}.block{grid-template-columns:28px 52px 1fr}.block>.timecontrols,.block>.iconbtn{grid-column:3}.currentName{font-size:30px}}
+@media(max-width:900px){header{height:auto;flex-wrap:wrap;padding:10px 14px}.weekgrid{grid-template-columns:1fr 1fr}.aulaGrid{grid-template-columns:1fr}.current{position:static}.block{grid-template-columns:28px 52px 1fr}.block>.timecontrols,.block>.iconbtn{grid-column:3}.currentName{font-size:30px}}
 @media(max-width:560px){header{height:auto;padding:10px;flex-wrap:wrap}.brand{width:100%}.weekgrid{grid-template-columns:1fr}.wrap{padding:10px}.block{grid-template-columns:28px 48px 1fr}.timecontrols{flex-wrap:wrap}.currentPicto{width:115px;height:115px}}
 </style>
 </head>
 <body>
 <header>
  <div class="brand">Axenda Visual FARO</div>
+ <button class="navbtn sound-toggle" data-bell-toggle type="button" aria-pressed="true" title="Activar ou desactivar o son ao rematar cada actividade">🔔 Campá: activada</button>
  <button class="navbtn active" data-view="editor">Editor</button>
  <button class="navbtn" data-view="week">Semana</button>
  <button class="navbtn" data-view="library">Sesións</button>
@@ -40,7 +42,7 @@ footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center
   <div class="field"><span>Duración</span><div id="durations" class="duration"></div></div>
  </div>
  <div class="panel">
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap"><strong style="margin-right:auto">Estrutura da sesión</strong><button class="btn" id="newSession">Nova</button><button class="btn" id="saveSession">Gardar</button><button class="btn" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button><button class="btn primary" id="startSession">Comezar</button></div>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap"><strong style="margin-right:auto">Estrutura da sesión</strong><button class="btn" id="newSession">Nova</button><button class="btn" id="saveSession">Gardar</button><button class="btn sound-toggle" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button><button class="btn primary" id="startSession">Comezar</button></div>
   <div id="sequence" class="sequence"></div>
   <p id="summary" class="summary"></p>
  </div>
@@ -63,7 +65,7 @@ footer{font-size:11px;color:var(--muted);padding:6px 20px 20px;text-align:center
    <div id="clock" class="clock"></div>
    <div class="live"><button data-live="-5">−5</button><button data-live="-1">−1</button><button id="pause">Pausa</button><button data-live="1">+1</button><button data-live="5">+5</button></div>
    <div class="live" style="margin-top:8px"><button id="prevBlock">◀</button><button id="nextBlock">▶</button><button id="miniMode">Modo mini</button><button id="exitAula">Editar</button></div>
-   <div class="live" style="margin-top:8px"><button class="btn" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button></div>
+   <div class="live" style="margin-top:8px"><button class="btn sound-toggle" data-bell-toggle type="button" aria-pressed="true">🔔 Campá: activada</button></div>
   </div>
   <div class="panel"><div id="timeline" class="timeline"></div></div>
  </div>
@@ -98,6 +100,7 @@ function renderBellToggle(){
  $$('[data-bell-toggle]').forEach(b=>{
   b.textContent=bellEnabled?'🔔 Campá: activada':'🔕 Campá: desactivada';
   b.classList.toggle('primary',bellEnabled);
+  b.classList.toggle('active',bellEnabled);
   b.setAttribute('aria-pressed',String(bellEnabled));
   b.title=bellEnabled?'Preme para desactivar o son ao rematar cada actividade':'Preme para activar o son ao rematar cada actividade';
  });
